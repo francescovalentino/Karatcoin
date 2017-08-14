@@ -45,6 +45,14 @@ contract Core {
     }
   }
 
+  modifier ifSupervisor() {
+    if (!supervisors[msg.sender]) {
+      throw;
+    } else {
+      _;
+    }
+  }
+
   function Core() {
     approved[msg.sender] = true;
     supervisors[msg.sender] = true;
@@ -64,6 +72,18 @@ contract Core {
 
   function unauthorizeUser(address _user) ifSupervisor returns (bool success) {
     approved[_user] = false;
+    success = true;
+    return success;
+  }
+
+  function authorizeSupervisor(address _user) ifOwner returns (bool success) {
+    supervisors[_user] = true;
+    success = true;
+    return success;
+  }
+
+  function unauthorizeSupervisor(address _user) ifOwner returns (bool success) {
+    supervisors[_user] = false;
     success = true;
     return success;
   }
