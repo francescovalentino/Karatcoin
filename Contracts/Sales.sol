@@ -45,7 +45,7 @@ contract TokenSales is Token_Sales_Sets {
     saleStatus.releasedTokens = 0;
     saleStatus.releasedCertificates = 0;
     saleStatus.claimers = 0;
-    saleConfig.startDate = Conf_Sets(_config).getConfigUint("sale1:period1");
+    saleConfig.startDate = Conf_Sets(_config).getConfigUint("sale1:time1");
     saleConfig.endDate = Conf_Sets(_config).getConfigUint("sale1:end");
     saleConfig.target = Conf_Sets(_config).getConfigUint("sale1:target") * Cents;
     saleConfig.cap = Conf_Sets(_config).getConfigUint("sale1:cap") * Cents;
@@ -58,7 +58,7 @@ contract TokenSales is Token_Sales_Sets {
   }
 
   function () {
-    if (getPeriod() == 0) throw;
+    if (getTime() == 0) throw;
     uint256 _amount = msg.value;
     address _sender;
     if (proxies[msg.sender].isProxy == true) {
@@ -78,13 +78,13 @@ contract TokenSales is Token_Sales_Sets {
     if ((saleInfo.realCents + _cents) > saleConfig.cap) return false;
     uint256 _wei = _amount;
     uint256 _modifier;
-    uint _period = getPeriod();
-    if ((_period == 0) || (_cents == 0)) {
+    uint _time = getTime();
+    if ((_time == 0) || (_cents == 0)) {
       return false;
     } else {
-      if (_period == 3) _modifier = 100;
-      if (_period == 2) _modifier = 115;
-      if (_period == 1) _modifier = 130;
+      if (_time == 3) _modifier = 100;
+      if (_time == 2) _modifier = 115;
+      if (_time == 1) _modifier = 130;
       uint256 _creditwei = _amount;
       uint256 _creditcents = (weiToCents(_creditwei) * _modifier * 10000) / 1000000 ;
       buyers[_user].centsTotal += _creditcents;
@@ -162,11 +162,11 @@ contract TokenSales is Token_Sales_Sets {
 
   }
 
-  function getPeriod() public constant returns (uint saleperiod) {
+  function getTime() public constant returns (uint saletime) {
     
     if ((now > saleConfig.endDate) || (now < saleConfig.startDate)) {
-      saleperiod = 0;
-      return saleperiod;
+      saletime = 0;
+      return saletime;
     } else {
       return false;
     }
