@@ -71,8 +71,8 @@ contract Token_Sales_Sets {
 
   struct SaleConfig {
     uint256 startDate;
-    uint256 _2ndPeriod;
-    uint256 _3rdPeriod;
+    uint256 _2ndTime;
+    uint256 _3rdTime;
     uint256 endDate;
     uint256 certificateCost;
     uint256 founderAmount;
@@ -108,12 +108,12 @@ contract Token_Sales_Sets {
   function userInfo(address _user) public constant returns (uint256 centstotal, uint256 weitotal, uint256 share, uint certificates, bool claimed); 
   function ownInfo() public constant returns (uint256 centstotal, uint256 weitotal, uint256 share, uint certificates, bool claimed); 
   function targetReached() public constant returns (bool reached);
-  function getPeriod() public constant returns (uint saleperiod);
+  function getTime() public constant returns (uint saletime);
   function claim() returns (bool success);
   function claimFounders() returns (bool success);
   function startDate() public constant returns (uint date);
-  function _2ndPeriod() public constant returns (uint date);
-  function _3rdPeriod() public constant returns (uint date);
+  function _2ndTime() public constant returns (uint date);
+  function _3rdTime() public constant returns (uint date);
   function endDate() public constant returns (uint date);  
   function isEnded() public constant returns (bool ended);
   function sendFunds() public returns (bool success);
