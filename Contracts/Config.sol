@@ -5,12 +5,14 @@ contract Config is Conf_Sets {
   event isChange(bytes32 indexed _confKey, address indexed _user);
 
   modifier ifAdmin() {
-    if (admins[msg.sender] == false) throw;
+    if (admins[msg.sender] == false) 
+    throw;
     _;
   }
 
   modifier ifOwner() {
-    if (msg.sender != owner) throw;
+    if (msg.sender != owner) 
+    throw;
     _;
   }
 
