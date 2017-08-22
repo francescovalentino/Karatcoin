@@ -16,10 +16,25 @@ contract Certificate  {
     }
   }
 
+
   event Transfer(address indexed _from, address indexed _to, uint256 _value);
+  event Mint(address indexed _receiver, uint256 indexed _amount);
+  event Approval(address indexed _owner, address indexed _spender, uint256  _value);
 
   function Certificate() {
     owner = msg.sender;
+  }
+
+  function safeToAdd(uint a, uint b) returns (bool) {
+  }
+
+  function addSafely(uint a, uint b) returns (uint result) {
+  }
+
+  function safeToSubtract(uint a, uint b) returns (bool) {
+  }
+
+  function subtractSafely(uint a, uint b) returns (uint) {
   }
 
   function balanceOf(address _owner) constant returns (uint256 balance) {
@@ -38,11 +53,20 @@ contract Certificate  {
     return success;
   }
 
+  function transferFrom(address _from, address _to, uint256 _value) returns (bool success) {
+  }
+
   function approve(address _spender, uint256 _value) returns (bool success) {
     allowed[msg.sender][_spender] = _value;
     Approval(msg.sender, _spender, _value);
     success = true;
     return success;
+  }
+
+  function allowance(address _owner, address _spender) constant returns (uint256 remaining) {
+  }
+
+  function mint(address _owner, uint256 _amount) ifOwner returns (bool success) {
   }
 
   function setOwner(address _owner) ifOwner returns (bool success) {
@@ -81,6 +105,8 @@ contract Token {
   }
 
   event Transfer(address indexed _from, address indexed _to, uint256 _value);
+  event Mint(address indexed _receiver, uint256  _amount);
+  event Approval(address indexed _owner, address indexed _spender, uint256  _value);
 
   function Token(address _config) {
     config = _config;
@@ -89,6 +115,18 @@ contract Token {
     seller[_initseller] = true; 
     certificateLedger = new Certificate();
     locked = false;
+  }
+
+  function safeToAdd(uint a, uint b) returns (bool) {
+  }
+
+  function addSafely(uint a, uint b) returns (uint result) {
+  }
+
+  function safeToSubtract(uint a, uint b) returns (bool) {
+  }
+
+  function subtractSafely(uint a, uint b) returns (uint) {
   }
 
   function balanceOf(address _owner) constant returns (uint256 balance) {
@@ -105,6 +143,26 @@ contract Token {
       success = false;
     }
     return success;
+  }
+
+  function transferFrom(address _from, address _to, uint256 _value) returns (bool success) {
+  }
+
+  function approve(address _spender, uint256 _value) returns (bool success) {
+  }
+
+  function allowance(address _owner, address _spender) constant returns (uint256 remaining) {
+  }
+  function mint(address _owner, uint256 _amount) ifSales returns (bool success) {
+  }
+
+  function mintCertificate(address _owner, uint256 _amount) ifSales returns (bool success) {
+  }
+
+  function registerDao(address _dao) ifOwner returns (bool success) {
+  }
+
+  function setDao(address _newdao) ifDao returns (bool success) {
   }
 
   function isSeller(address _query) returns (bool isseller) {
