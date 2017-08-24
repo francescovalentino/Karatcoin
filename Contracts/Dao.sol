@@ -28,14 +28,23 @@ contract Certificate {
     return (a + b >= a);
   }
 
-  function safeToSubtract(uint a, uint b) returns (bool) {
+  function safeToSub(uint a, uint b) returns (bool) {
     return (b <= a);
   }
 
-  function addSafely(uint a, uint b) returns (uint result) {
+  function addSafe(uint a, uint b) returns (uint result) {
+    if (!safeToAdd(a, b)) {
+      throw;
+    } else {
+      result = a + b;
+      return result;
+    }
   }
 
-  function subtractSafely(uint a, uint b) returns (uint) {
+  function subSafe(uint a, uint b) returns (uint) {
+    if (!safeToSub(a, b)) 
+    throw;
+    return a - b;
   }
 
   function balanceOf(address _owner) constant returns (uint256 balance) {
@@ -43,14 +52,28 @@ contract Certificate {
   }
 
   function transferFrom(address _from, address _to, uint256 _value) returns (bool success) {
+    if (balances[_from] >= _value && allowed[_from][msg.sender] >= _value && _value > 0) {
+      balances[_to] = addSafe(balances[_to], _value);
+      balances[_from] = subSafe(balances[_from], _value);
+      allowed[_from][msg.sender] = subSafe(allowed[_from][msg.sender], _value);
+      Transfer(_from, _to, _value);
+      return true;
+    } else {
+      return false;
+    }
   }
 
   function transfer(address _to, uint256 _value) returns (bool success) {
+    if (balances[msg.sender] >= _value && _value > 0) {
+
+      success = true;
+    } else {
+      success = false;
+    }
+    return success;
   }
 
   function approve(address _spender, uint256 _value) returns (bool success) {
-    allowed[msg.sender][_spender] = _value;
-    Approval(msg.sender, _spender, _value);
     success = true;
     return success;
   }
@@ -71,7 +94,7 @@ contract Token {
 
   address public owner;
   address public config;
-  address public certificateLedger;
+  address public certLedger;
   address public dao;  
   bool public locked;
   uint256 public totalSupply;
@@ -107,14 +130,25 @@ contract Token {
     return (a + b >= a);
   }
 
-  function safeToSubtract(uint a, uint b) returns (bool) {
+  function safeToSub(uint a, uint b) returns (bool) {
     return (b <= a);
   }
 
-  function addSafely(uint a, uint b) returns (uint result) {
+  function addSafe(uint a, uint b) returns (uint result) {
+    if (!safeToAdd(a, b)) {
+      throw;
+    } else {
+      result = a + b;
+      return result;
+    }
   }
 
-  function subtractSafely(uint a, uint b) returns (uint) {
+  function subSafe(uint a, uint b) 
+  returns (uint) 
+  {
+    if (!safeToSub(a, b)) 
+    throw;
+    return a - b;
   }
 
   function balanceOf(address _owner) constant returns (uint256 balance) {
@@ -122,14 +156,25 @@ contract Token {
   }
 
   function transfer(address _to, uint256 _value) returns (bool success) {
+    if (balances[msg.sender] >= _value && _value > 0) {
+
+      success = true;
+    } else {
+      success = false;
+    }
+    return success;
   }
 
   function transferFrom(address _from, address _to, uint256 _value) returns (bool success) {
+    if (balances[_from] >= _value && allowed[_from][msg.sender] >= _value && _value > 0) {
+
+      return true;
+    } else {
+      return false;
+    }
   }
 
   function approve(address _spender, uint256 _value) returns (bool success) {
-    allowed[msg.sender][_spender] = _value;
-    Approval(msg.sender, _spender, _value);
     success = true;
     return success;
   }
@@ -167,7 +212,7 @@ contract Token {
   }
 
   function setOwner(address _newowner) ifDao returns (bool success) {
-    if (Certificate(certificateLedger).setOwner(_newowner)) {
+    if (Certificate(certLedger).setOwner(_newowner)) {
       owner = _newowner;
       success = true;
     } else {
