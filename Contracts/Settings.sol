@@ -29,7 +29,7 @@ contract Token_Sets {
   address config;
   address owner;
   address dao;
-  address public certificateLedger;
+  address public certLedger;
   bool locked;
   uint256 public totalSupply;
 
